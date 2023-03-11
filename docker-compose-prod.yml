@@ -1,0 +1,27 @@
+version: "3"
+services:
+  api:
+    image: ndomi/fastapi:latest
+    depends_on:
+      - postgres
+    ports:
+      - 80:8000
+
+    command: > 
+      sh -c "alembic upgrade head"
+    env_file:
+      - ./.env
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+
+volumes:
+  postgres-db:
+  
